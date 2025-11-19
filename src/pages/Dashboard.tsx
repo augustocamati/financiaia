@@ -29,10 +29,8 @@ interface FixedExpenses {
   other: number;
 }
 
-interface VariableExpenses {
-  leisure: number;
-  shopping: number;
-  health: number;
+interface VariableExpensesData {
+  expenses: { id: string; category: string; amount: number }[];
 }
 
 interface Goal {
@@ -62,10 +60,8 @@ const Dashboard = () => {
     other: 0,
   });
 
-  const [variableExpenses, setVariableExpenses] = useState<VariableExpenses>({
-    leisure: 0,
-    shopping: 0,
-    health: 0,
+  const [variableExpenses, setVariableExpenses] = useState<VariableExpensesData>({
+    expenses: [],
   });
 
   const [goals, setGoals] = useState<Goal[]>([]);
@@ -86,7 +82,7 @@ const Dashboard = () => {
     });
   };
 
-  const handleSaveVariableExpenses = (data: VariableExpenses) => {
+  const handleSaveVariableExpenses = (data: VariableExpensesData) => {
     setVariableExpenses(data);
     toast({
       title: "Gastos variáveis salvos!",
@@ -107,7 +103,7 @@ const Dashboard = () => {
     incomeData.additionalIncomes.reduce((sum, inc) => sum + inc.amount, 0);
   
   const totalFixedExpenses = Object.values(fixedExpenses).reduce((sum, val) => sum + val, 0);
-  const totalVariableExpenses = Object.values(variableExpenses).reduce((sum, val) => sum + val, 0);
+  const totalVariableExpenses = variableExpenses.expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const monthlyAvailable = totalIncome - totalFixedExpenses - totalVariableExpenses;
 
   return (
