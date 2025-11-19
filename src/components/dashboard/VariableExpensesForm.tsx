@@ -3,37 +3,50 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Plus, X } from "lucide-react";
 
-interface VariableExpenses {
-  leisure: number;
-  shopping: number;
-  health: number;
+interface VariableExpense {
+  id: string;
+  category: string;
+  amount: number;
+}
+
+interface VariableExpensesData {
+  expenses: VariableExpense[];
 }
 
 interface VariableExpensesFormProps {
-  onSave: (data: VariableExpenses) => void;
-  initialData?: VariableExpenses;
+  onSave: (data: VariableExpensesData) => void;
+  initialData?: VariableExpensesData;
 }
 
 export const VariableExpensesForm = ({ onSave, initialData }: VariableExpensesFormProps) => {
-  const [expenses, setExpenses] = useState<VariableExpenses>(
-    initialData || {
-      leisure: 0,
-      shopping: 0,
-      health: 0,
-    }
+  const [expenses, setExpenses] = useState<VariableExpense[]>(
+    initialData?.expenses || []
   );
+  const [newCategory, setNewCategory] = useState("");
+  const [newAmount, setNewAmount] = useState(0);
 
-  const updateExpense = (key: keyof VariableExpenses, value: number) => {
-    setExpenses({ ...expenses, [key]: value });
+  const addExpense = () => {
+    if (newCategory && newAmount > 0) {
+      setExpenses([
+        ...expenses,
+        { id: Date.now().toString(), category: newCategory, amount: newAmount },
+      ]);
+      setNewCategory("");
+      setNewAmount(0);
+    }
+  };
+
+  const removeExpense = (id: string) => {
+    setExpenses(expenses.filter((expense) => expense.id !== id));
   };
 
   const handleSave = () => {
-    onSave(expenses);
+    onSave({ expenses });
   };
 
-  const total = Object.values(expenses).reduce((sum, val) => sum + val, 0);
+  const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
 
   return (
     <Card>
@@ -43,38 +56,43 @@ export const VariableExpensesForm = ({ onSave, initialData }: VariableExpensesFo
           Gastos Variáveis Estimados
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="leisure">Lazer (R$)</Label>
-          <Input
-            id="leisure"
-            type="number"
-            value={expenses.leisure}
-            onChange={(e) => updateExpense("leisure", Number(e.target.value))}
-            placeholder="0,00"
-          />
-        </div>
+      <CardContent className="space-y-6">
+        <div className="space-y-4">
+          <h4 className="font-semibold text-sm">Categorias de Gastos</h4>
+          
+          {expenses.map((expense) => (
+            <div key={expense.id} className="flex items-center gap-2 p-3 bg-secondary/50 rounded-lg">
+              <div className="flex-1">
+                <p className="font-medium text-sm">{expense.category}</p>
+                <p className="text-sm text-muted-foreground">R$ {expense.amount.toFixed(2)}</p>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => removeExpense(expense.id)}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          ))}
 
-        <div className="space-y-2">
-          <Label htmlFor="shopping">Compras Gerais (R$)</Label>
-          <Input
-            id="shopping"
-            type="number"
-            value={expenses.shopping}
-            onChange={(e) => updateExpense("shopping", Number(e.target.value))}
-            placeholder="0,00"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="health">Saúde (R$)</Label>
-          <Input
-            id="health"
-            type="number"
-            value={expenses.health}
-            onChange={(e) => updateExpense("health", Number(e.target.value))}
-            placeholder="0,00"
-          />
+          <div className="flex gap-2">
+            <Input
+              placeholder="Categoria (ex: Lazer, Saúde)"
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+            />
+            <Input
+              type="number"
+              placeholder="Valor"
+              value={newAmount || ""}
+              onChange={(e) => setNewAmount(Number(e.target.value))}
+              className="w-32"
+            />
+            <Button onClick={addExpense} size="icon" variant="outline">
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
 
         <div className="pt-4 border-t">
