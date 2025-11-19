@@ -6,6 +6,9 @@ import { VariableExpensesForm } from "@/components/dashboard/VariableExpensesFor
 import { GoalsForm } from "@/components/dashboard/GoalsForm";
 import { DistributionPanel } from "@/components/dashboard/DistributionPanel";
 import { GoalsProjection } from "@/components/dashboard/GoalsProjection";
+import { AIInsightsPanel } from "@/components/dashboard/AIInsightsPanel";
+import { ScenarioSimulator } from "@/components/dashboard/ScenarioSimulator";
+import { AIChatAssistant } from "@/components/dashboard/AIChatAssistant";
 import { useToast } from "@/hooks/use-toast";
 
 interface IncomeData {
@@ -112,10 +115,12 @@ const Dashboard = () => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
             <TabsTrigger value="budget">Orçamento</TabsTrigger>
             <TabsTrigger value="goals">Metas</TabsTrigger>
+            <TabsTrigger value="ai">IA & Projeções</TabsTrigger>
+            <TabsTrigger value="chat">Assistente</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -149,6 +154,29 @@ const Dashboard = () => {
               <GoalsForm onSave={handleSaveGoals} initialData={goals} />
               <GoalsProjection goals={goals} monthlyAvailable={monthlyAvailable} />
             </div>
+          </TabsContent>
+
+          <TabsContent value="ai" className="space-y-6">
+            <div className="grid lg:grid-cols-2 gap-6">
+              <AIInsightsPanel 
+                financialData={{
+                  totalIncome,
+                  totalFixedExpenses,
+                  totalVariableExpenses,
+                  monthlyAvailable,
+                  goals
+                }}
+              />
+              <ScenarioSimulator 
+                currentIncome={totalIncome}
+                currentExpenses={totalFixedExpenses + totalVariableExpenses}
+                goals={goals}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="chat" className="space-y-6">
+            <AIChatAssistant />
           </TabsContent>
         </Tabs>
       </div>

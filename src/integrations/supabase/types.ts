@@ -14,7 +14,141 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_insights: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          insight_type: string
+          is_read: boolean
+          priority: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          insight_type: string
+          is_read?: boolean
+          priority?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          insight_type?: string
+          is_read?: boolean
+          priority?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      financial_data: {
+        Row: {
+          additional_incomes: Json | null
+          created_at: string
+          fixed_expenses: Json
+          goals: Json | null
+          id: string
+          main_income: number
+          month_year: string
+          payment_day: number
+          updated_at: string
+          user_id: string
+          variable_expenses: Json
+        }
+        Insert: {
+          additional_incomes?: Json | null
+          created_at?: string
+          fixed_expenses?: Json
+          goals?: Json | null
+          id?: string
+          main_income?: number
+          month_year: string
+          payment_day?: number
+          updated_at?: string
+          user_id: string
+          variable_expenses?: Json
+        }
+        Update: {
+          additional_incomes?: Json | null
+          created_at?: string
+          fixed_expenses?: Json
+          goals?: Json | null
+          id?: string
+          main_income?: number
+          month_year?: string
+          payment_day?: number
+          updated_at?: string
+          user_id?: string
+          variable_expenses?: Json
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          first_name?: string | null
+          id: string
+          last_name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      scenarios: {
+        Row: {
+          created_at: string
+          description: string | null
+          expense_change: number | null
+          id: string
+          income_change: number | null
+          investment_allocation: Json | null
+          name: string
+          projected_results: Json | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          expense_change?: number | null
+          id?: string
+          income_change?: number | null
+          investment_allocation?: Json | null
+          name: string
+          projected_results?: Json | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          expense_change?: number | null
+          id?: string
+          income_change?: number | null
+          investment_allocation?: Json | null
+          name?: string
+          projected_results?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -1,1 +1,10 @@
 project_id = "otougcbgjkgffwttgotf"
+
+[functions.ai-financial-insights]
+verify_jwt = true
+
+[functions.ai-chat-assistant]
+verify_jwt = true
+
+[functions.scenario-simulation]
+verify_jwt = true
