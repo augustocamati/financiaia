@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, TrendingUp, PiggyBank, Target, Shield } from "lucide-react";
+import { ArrowRight, TrendingUp, PiggyBank, Target, Shield, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary">
@@ -18,9 +20,21 @@ const Index = () => {
               FinanceIA
             </span>
           </div>
-          <Button variant="outline" onClick={() => navigate("/auth")}>
-            Entrar
-          </Button>
+          {user ? (
+            <div className="flex gap-2">
+              <Button onClick={() => navigate("/dashboard")}>
+                Dashboard
+              </Button>
+              <Button variant="outline" onClick={signOut}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Sair
+              </Button>
+            </div>
+          ) : (
+            <Button variant="outline" onClick={() => navigate("/auth")}>
+              Entrar
+            </Button>
+          )}
         </nav>
 
         <div className="max-w-4xl mx-auto text-center space-y-8">

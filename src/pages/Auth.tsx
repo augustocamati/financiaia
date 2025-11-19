@@ -1,77 +1,167 @@
-import { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { TrendingUp } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
+import { DollarSign } from 'lucide-react';
 
 const Auth = () => {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(true);
+  const { signIn, signUp, user } = useAuth();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
+
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder - will implement auth later
-    navigate("/dashboard");
+    setLoading(true);
+
+    const { error } = await signIn(email, password);
+    
+    if (error) {
+      toast({
+        title: 'Erro ao entrar',
+        description: error.message === 'Invalid login credentials' 
+          ? 'Email ou senha incorretos' 
+          : error.message,
+        variant: 'destructive',
+      });
+    } else {
+      toast({
+        title: 'Login realizado!',
+        description: 'Bem-vindo de volta!',
+      });
+      navigate('/dashboard');
+    }
+    
+    setLoading(false);
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    if (password.length < 6) {
+      toast({
+        title: 'Senha muito curta',
+        description: 'A senha deve ter pelo menos 6 caracteres',
+        variant: 'destructive',
+      });
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await signUp(email, password);
+    
+    if (error) {
+      toast({
+        title: 'Erro ao criar conta',
+        description: error.message === 'User already registered' 
+          ? 'Este email já está cadastrado' 
+          : error.message,
+        variant: 'destructive',
+      });
+    } else {
+      toast({
+        title: 'Conta criada!',
+        description: 'Você já pode fazer login.',
+      });
+    }
+    
+    setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary flex items-center justify-center p-4">
-      <Card className="w-full max-w-md p-8">
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center">
-            <TrendingUp className="w-7 h-7 text-primary-foreground" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-secondary p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4 w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+            <DollarSign className="w-6 h-6 text-primary-foreground" />
           </div>
-          <span className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            FinanceIA
-          </span>
-        </div>
+          <CardTitle className="text-2xl">FinanceIA</CardTitle>
+          <CardDescription>Gestão financeira inteligente</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="login" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="login">Entrar</TabsTrigger>
+              <TabsTrigger value="signup">Criar Conta</TabsTrigger>
+            </TabsList>
 
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold mb-2">
-            {isLogin ? "Bem-vindo de volta!" : "Crie sua conta"}
-          </h2>
-          <p className="text-muted-foreground">
-            {isLogin
-              ? "Entre para acessar seu painel financeiro"
-              : "Comece a controlar suas finanças hoje"}
-          </p>
-        </div>
+            <TabsContent value="login">
+              <form onSubmit={handleSignIn} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email-login">Email</Label>
+                  <Input
+                    id="email-login"
+                    type="email"
+                    placeholder="seu@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="password-login">Senha</Label>
+                  <Input
+                    id="password-login"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? 'Entrando...' : 'Entrar'}
+                </Button>
+              </form>
+            </TabsContent>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {!isLogin && (
-            <div className="space-y-2">
-              <Label htmlFor="name">Nome Completo</Label>
-              <Input id="name" placeholder="Seu nome" />
-            </div>
-          )}
-
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="seu@email.com" />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="password">Senha</Label>
-            <Input id="password" type="password" placeholder="••••••••" />
-          </div>
-
-          <Button type="submit" className="w-full bg-gradient-primary">
-            {isLogin ? "Entrar" : "Criar Conta"}
-          </Button>
-        </form>
-
-        <div className="mt-6 text-center">
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-sm text-primary hover:underline"
-          >
-            {isLogin
-              ? "Não tem uma conta? Cadastre-se"
-              : "Já tem uma conta? Entre"}
-          </button>
-        </div>
+            <TabsContent value="signup">
+              <form onSubmit={handleSignUp} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email-signup">Email</Label>
+                  <Input
+                    id="email-signup"
+                    type="email"
+                    placeholder="seu@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="password-signup">Senha</Label>
+                  <Input
+                    id="password-signup"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    minLength={6}
+                  />
+                  <p className="text-xs text-muted-foreground">Mínimo 6 caracteres</p>
+                </div>
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? 'Criando conta...' : 'Criar Conta'}
+                </Button>
+              </form>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
       </Card>
     </div>
   );
