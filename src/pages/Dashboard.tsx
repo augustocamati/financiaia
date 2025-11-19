@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { IncomeForm } from "@/components/dashboard/IncomeForm";
 import { FixedExpensesForm } from "@/components/dashboard/FixedExpensesForm";
 import { VariableExpensesForm } from "@/components/dashboard/VariableExpensesForm";
@@ -10,6 +11,8 @@ import { AIInsightsPanel } from "@/components/dashboard/AIInsightsPanel";
 import { ScenarioSimulator } from "@/components/dashboard/ScenarioSimulator";
 import { AIChatAssistant } from "@/components/dashboard/AIChatAssistant";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { LogOut } from "lucide-react";
 
 interface IncomeData {
   mainIncome: number;
@@ -42,6 +45,7 @@ interface Goal {
 
 const Dashboard = () => {
   const { toast } = useToast();
+  const { signOut, user } = useAuth();
   
   const [incomeData, setIncomeData] = useState<IncomeData>({
     mainIncome: 0,
@@ -109,9 +113,17 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Painel Financeiro 💰</h1>
-          <p className="text-muted-foreground">Gerencie sua renda, gastos e objetivos</p>
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Painel Financeiro 💰</h1>
+            <p className="text-muted-foreground">
+              Bem-vindo, {user?.email}
+            </p>
+          </div>
+          <Button variant="outline" onClick={signOut}>
+            <LogOut className="w-4 h-4 mr-2" />
+            Sair
+          </Button>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
