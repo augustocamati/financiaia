@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { IncomeForm } from "@/components/dashboard/IncomeForm";
@@ -11,89 +10,26 @@ import { AIInsightsPanel } from "@/components/dashboard/AIInsightsPanel";
 import { ScenarioSimulator } from "@/components/dashboard/ScenarioSimulator";
 import { AIChatAssistant } from "@/components/dashboard/AIChatAssistant";
 import { InvestmentRecommendation } from "@/components/dashboard/InvestmentRecommendation";
-import { useToast } from "@/hooks/use-toast";
+import { FinancialCharts } from "@/components/dashboard/FinancialCharts";
 import { useAuth } from "@/contexts/AuthContext";
-import { LogOut } from "lucide-react";
-
-interface IncomeData {
-  mainIncome: number;
-  paymentDay: number;
-  additionalIncomes: { id: string; source: string; amount: number }[];
-}
-
-interface FixedExpensesData {
-  expenses: { id: string; category: string; amount: number }[];
-}
-
-interface VariableExpensesData {
-  expenses: { id: string; category: string; amount: number }[];
-}
-
-interface Goal {
-  id: string;
-  name: string;
-  type: string;
-  targetAmount: number;
-  deadline?: string;
-}
+import { useFinancialData } from "@/hooks/useFinancialData";
+import { LogOut, Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Dashboard = () => {
-  const { toast } = useToast();
   const { signOut, user } = useAuth();
-  
-  const [incomeData, setIncomeData] = useState<IncomeData>({
-    mainIncome: 0,
-    paymentDay: 1,
-    additionalIncomes: [],
-  });
-
-  const [fixedExpenses, setFixedExpenses] = useState<FixedExpensesData>({
-    expenses: [
-      { id: "1", category: "Aluguel/Moradia", amount: 0 },
-      { id: "2", category: "Água, Luz, Internet", amount: 0 },
-      { id: "3", category: "Transporte", amount: 0 },
-      { id: "4", category: "Alimentação Básica", amount: 0 },
-      { id: "5", category: "Escola/Educação", amount: 0 },
-    ],
-  });
-
-  const [variableExpenses, setVariableExpenses] = useState<VariableExpensesData>({
-    expenses: [],
-  });
-
-  const [goals, setGoals] = useState<Goal[]>([]);
-
-  const handleSaveIncome = (data: IncomeData) => {
-    setIncomeData(data);
-    toast({
-      title: "Renda salva!",
-      description: "Seus dados de renda foram atualizados com sucesso.",
-    });
-  };
-
-  const handleSaveFixedExpenses = (data: FixedExpensesData) => {
-    setFixedExpenses(data);
-    toast({
-      title: "Gastos fixos salvos!",
-      description: "Seus gastos fixos foram atualizados com sucesso.",
-    });
-  };
-
-  const handleSaveVariableExpenses = (data: VariableExpensesData) => {
-    setVariableExpenses(data);
-    toast({
-      title: "Gastos variáveis salvos!",
-      description: "Seus gastos variáveis foram atualizados com sucesso.",
-    });
-  };
-
-  const handleSaveGoals = (data: Goal[]) => {
-    setGoals(data);
-    toast({
-      title: "Objetivos salvos!",
-      description: "Suas metas financeiras foram atualizadas com sucesso.",
-    });
-  };
+  const {
+    loading,
+    saving,
+    incomeData,
+    fixedExpenses,
+    variableExpenses,
+    goals,
+    saveIncome,
+    saveFixedExpenses,
+    saveVariableExpenses,
+    saveGoals,
+  } = useFinancialData();
 
   // Cálculos
   const totalIncome = incomeData.mainIncome + 
@@ -103,12 +39,35 @@ const Dashboard = () => {
   const totalVariableExpenses = variableExpenses.expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const monthlyAvailable = totalIncome - totalFixedExpenses - totalVariableExpenses;
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary">
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-8 flex justify-between items-center">
+            <div>
+              <Skeleton className="h-9 w-64 mb-2" />
+              <Skeleton className="h-5 w-48" />
+            </div>
+            <Skeleton className="h-10 w-20" />
+          </div>
+          <div className="grid gap-6 lg:grid-cols-2">
+            <Skeleton className="h-96" />
+            <Skeleton className="h-96" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Painel Financeiro 💰</h1>
+            <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
+              Painel Financeiro 💰
+              {saving && <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />}
+            </h1>
             <p className="text-muted-foreground">
               Bem-vindo, {user?.email}
             </p>
@@ -138,15 +97,22 @@ const Dashboard = () => {
               />
               <GoalsProjection goals={goals} monthlyAvailable={monthlyAvailable} />
             </div>
+            <FinancialCharts
+              totalIncome={totalIncome}
+              fixedExpenses={totalFixedExpenses}
+              variableExpenses={totalVariableExpenses}
+              fixedExpensesList={fixedExpenses.expenses}
+              variableExpensesList={variableExpenses.expenses}
+            />
           </TabsContent>
 
           <TabsContent value="budget" className="space-y-6">
             <div className="grid lg:grid-cols-2 gap-6">
-              <IncomeForm onSave={handleSaveIncome} initialData={incomeData} />
-              <FixedExpensesForm onSave={handleSaveFixedExpenses} initialData={fixedExpenses} />
+              <IncomeForm onSave={saveIncome} initialData={incomeData} />
+              <FixedExpensesForm onSave={saveFixedExpenses} initialData={fixedExpenses} />
             </div>
             <div className="grid lg:grid-cols-2 gap-6">
-              <VariableExpensesForm onSave={handleSaveVariableExpenses} initialData={variableExpenses} />
+              <VariableExpensesForm onSave={saveVariableExpenses} initialData={variableExpenses} />
               <DistributionPanel
                 totalIncome={totalIncome}
                 fixedExpenses={totalFixedExpenses}
@@ -157,7 +123,7 @@ const Dashboard = () => {
 
           <TabsContent value="goals" className="space-y-6">
             <div className="grid lg:grid-cols-2 gap-6">
-              <GoalsForm onSave={handleSaveGoals} initialData={goals} />
+              <GoalsForm onSave={saveGoals} initialData={goals} />
               <GoalsProjection goals={goals} monthlyAvailable={monthlyAvailable} />
             </div>
           </TabsContent>
