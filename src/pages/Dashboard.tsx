@@ -10,6 +10,7 @@ import { GoalsProjection } from "@/components/dashboard/GoalsProjection";
 import { AIInsightsPanel } from "@/components/dashboard/AIInsightsPanel";
 import { ScenarioSimulator } from "@/components/dashboard/ScenarioSimulator";
 import { AIChatAssistant } from "@/components/dashboard/AIChatAssistant";
+import { InvestmentRecommendation } from "@/components/dashboard/InvestmentRecommendation";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { LogOut } from "lucide-react";
@@ -20,13 +21,8 @@ interface IncomeData {
   additionalIncomes: { id: string; source: string; amount: number }[];
 }
 
-interface FixedExpenses {
-  rent: number;
-  utilities: number;
-  transport: number;
-  food: number;
-  education: number;
-  other: number;
+interface FixedExpensesData {
+  expenses: { id: string; category: string; amount: number }[];
 }
 
 interface VariableExpensesData {
@@ -51,13 +47,14 @@ const Dashboard = () => {
     additionalIncomes: [],
   });
 
-  const [fixedExpenses, setFixedExpenses] = useState<FixedExpenses>({
-    rent: 0,
-    utilities: 0,
-    transport: 0,
-    food: 0,
-    education: 0,
-    other: 0,
+  const [fixedExpenses, setFixedExpenses] = useState<FixedExpensesData>({
+    expenses: [
+      { id: "1", category: "Aluguel/Moradia", amount: 0 },
+      { id: "2", category: "Água, Luz, Internet", amount: 0 },
+      { id: "3", category: "Transporte", amount: 0 },
+      { id: "4", category: "Alimentação Básica", amount: 0 },
+      { id: "5", category: "Escola/Educação", amount: 0 },
+    ],
   });
 
   const [variableExpenses, setVariableExpenses] = useState<VariableExpensesData>({
@@ -74,7 +71,7 @@ const Dashboard = () => {
     });
   };
 
-  const handleSaveFixedExpenses = (data: FixedExpenses) => {
+  const handleSaveFixedExpenses = (data: FixedExpensesData) => {
     setFixedExpenses(data);
     toast({
       title: "Gastos fixos salvos!",
@@ -102,7 +99,7 @@ const Dashboard = () => {
   const totalIncome = incomeData.mainIncome + 
     incomeData.additionalIncomes.reduce((sum, inc) => sum + inc.amount, 0);
   
-  const totalFixedExpenses = Object.values(fixedExpenses).reduce((sum, val) => sum + val, 0);
+  const totalFixedExpenses = fixedExpenses.expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const totalVariableExpenses = variableExpenses.expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const monthlyAvailable = totalIncome - totalFixedExpenses - totalVariableExpenses;
 
@@ -123,10 +120,11 @@ const Dashboard = () => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
             <TabsTrigger value="budget">Orçamento</TabsTrigger>
             <TabsTrigger value="goals">Metas</TabsTrigger>
+            <TabsTrigger value="investments">Investimentos</TabsTrigger>
             <TabsTrigger value="ai">IA & Projeções</TabsTrigger>
             <TabsTrigger value="chat">Assistente</TabsTrigger>
           </TabsList>
@@ -162,6 +160,10 @@ const Dashboard = () => {
               <GoalsForm onSave={handleSaveGoals} initialData={goals} />
               <GoalsProjection goals={goals} monthlyAvailable={monthlyAvailable} />
             </div>
+          </TabsContent>
+
+          <TabsContent value="investments" className="space-y-6">
+            <InvestmentRecommendation monthlyAvailable={monthlyAvailable} />
           </TabsContent>
 
           <TabsContent value="ai" className="space-y-6">

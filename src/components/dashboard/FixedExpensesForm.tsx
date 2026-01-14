@@ -3,43 +3,62 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Home } from "lucide-react";
+import { Home, Plus, X } from "lucide-react";
 
-interface FixedExpenses {
-  rent: number;
-  utilities: number;
-  transport: number;
-  food: number;
-  education: number;
-  other: number;
+interface FixedExpense {
+  id: string;
+  category: string;
+  amount: number;
+}
+
+interface FixedExpensesData {
+  expenses: FixedExpense[];
 }
 
 interface FixedExpensesFormProps {
-  onSave: (data: FixedExpenses) => void;
-  initialData?: FixedExpenses;
+  onSave: (data: FixedExpensesData) => void;
+  initialData?: FixedExpensesData;
 }
 
 export const FixedExpensesForm = ({ onSave, initialData }: FixedExpensesFormProps) => {
-  const [expenses, setExpenses] = useState<FixedExpenses>(
-    initialData || {
-      rent: 0,
-      utilities: 0,
-      transport: 0,
-      food: 0,
-      education: 0,
-      other: 0,
-    }
+  const [expenses, setExpenses] = useState<FixedExpense[]>(
+    initialData?.expenses || [
+      { id: "1", category: "Aluguel/Moradia", amount: 0 },
+      { id: "2", category: "Água, Luz, Internet", amount: 0 },
+      { id: "3", category: "Transporte", amount: 0 },
+      { id: "4", category: "Alimentação Básica", amount: 0 },
+      { id: "5", category: "Escola/Educação", amount: 0 },
+    ]
   );
+  const [newCategory, setNewCategory] = useState("");
+  const [newAmount, setNewAmount] = useState(0);
 
-  const updateExpense = (key: keyof FixedExpenses, value: number) => {
-    setExpenses({ ...expenses, [key]: value });
+  const updateExpense = (id: string, amount: number) => {
+    setExpenses(expenses.map((exp) => 
+      exp.id === id ? { ...exp, amount } : exp
+    ));
+  };
+
+  const addExpense = () => {
+    if (newCategory && newAmount >= 0) {
+      setExpenses([
+        ...expenses,
+        { id: Date.now().toString(), category: newCategory, amount: newAmount },
+      ]);
+      setNewCategory("");
+      setNewAmount(0);
+    }
+  };
+
+  const removeExpense = (id: string) => {
+    setExpenses(expenses.filter((exp) => exp.id !== id));
   };
 
   const handleSave = () => {
-    onSave(expenses);
+    onSave({ expenses });
   };
 
-  const total = Object.values(expenses).reduce((sum, val) => sum + val, 0);
+  const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
 
   return (
     <Card>
@@ -50,70 +69,48 @@ export const FixedExpensesForm = ({ onSave, initialData }: FixedExpensesFormProp
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="rent">Aluguel/Moradia (R$)</Label>
-          <Input
-            id="rent"
-            type="number"
-            value={expenses.rent}
-            onChange={(e) => updateExpense("rent", Number(e.target.value))}
-            placeholder="0,00"
-          />
-        </div>
+        {expenses.map((expense) => (
+          <div key={expense.id} className="flex items-center gap-2">
+            <div className="flex-1 space-y-1">
+              <Label htmlFor={expense.id}>{expense.category} (R$)</Label>
+              <Input
+                id={expense.id}
+                type="number"
+                value={expense.amount}
+                onChange={(e) => updateExpense(expense.id, Number(e.target.value))}
+                placeholder="0,00"
+              />
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="mt-6"
+              onClick={() => removeExpense(expense.id)}
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+        ))}
 
-        <div className="space-y-2">
-          <Label htmlFor="utilities">Água, Luz, Internet (R$)</Label>
-          <Input
-            id="utilities"
-            type="number"
-            value={expenses.utilities}
-            onChange={(e) => updateExpense("utilities", Number(e.target.value))}
-            placeholder="0,00"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="transport">Transporte (R$)</Label>
-          <Input
-            id="transport"
-            type="number"
-            value={expenses.transport}
-            onChange={(e) => updateExpense("transport", Number(e.target.value))}
-            placeholder="0,00"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="food">Alimentação Básica (R$)</Label>
-          <Input
-            id="food"
-            type="number"
-            value={expenses.food}
-            onChange={(e) => updateExpense("food", Number(e.target.value))}
-            placeholder="0,00"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="education">Escola/Educação (R$)</Label>
-          <Input
-            id="education"
-            type="number"
-            value={expenses.education}
-            onChange={(e) => updateExpense("education", Number(e.target.value))}
-            placeholder="0,00"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="other">Outros (R$)</Label>
-          <Input
-            id="other"
-            type="number"
-            value={expenses.other}
-            onChange={(e) => updateExpense("other", Number(e.target.value))}
-            placeholder="0,00"
-          />
+        <div className="space-y-2 pt-4 border-t">
+          <h4 className="font-semibold text-sm">Adicionar Novo Gasto Fixo</h4>
+          <div className="flex gap-2">
+            <Input
+              placeholder="Categoria"
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+            />
+            <Input
+              type="number"
+              placeholder="Valor"
+              value={newAmount || ""}
+              onChange={(e) => setNewAmount(Number(e.target.value))}
+              className="w-32"
+            />
+            <Button onClick={addExpense} size="icon">
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
 
         <div className="pt-4 border-t">
