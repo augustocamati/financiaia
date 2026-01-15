@@ -42,9 +42,9 @@ export const FinancialCharts = ({
   ].sort((a, b) => b.amount - a.amount).slice(0, 8);
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("pt-BR", {
+    return new Intl.NumberFormat("pt-AO", {
       style: "currency",
-      currency: "BRL",
+      currency: "AOA",
     }).format(value);
   };
 

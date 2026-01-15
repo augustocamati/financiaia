@@ -239,10 +239,10 @@ export const InvestmentRecommendation = ({ monthlyAvailable }: InvestmentRecomme
         <div className="p-4 bg-secondary/50 rounded-lg">
           <h4 className="font-semibold mb-2">Sugestão de Aporte Mensal</h4>
           <p className="text-2xl font-bold text-primary">
-            R$ {investmentAmount.toFixed(2)}
+            Kz {investmentAmount.toFixed(2)}
           </p>
           <p className="text-sm text-muted-foreground mt-1">
-            30% do seu valor disponível mensal de R$ {monthlyAvailable.toFixed(2)}
+            30% do seu valor disponível mensal de Kz {monthlyAvailable.toFixed(2)}
           </p>
         </div>
 
@@ -253,15 +253,15 @@ export const InvestmentRecommendation = ({ monthlyAvailable }: InvestmentRecomme
             <div className="grid grid-cols-3 gap-2">
               <div className="p-3 bg-secondary/30 rounded-lg text-center">
                 <p className="text-xs text-muted-foreground">1 Ano</p>
-                <p className="font-bold text-sm">R$ {projections.oneYear.toFixed(0)}</p>
+                <p className="font-bold text-sm">Kz {projections.oneYear.toFixed(0)}</p>
               </div>
               <div className="p-3 bg-secondary/30 rounded-lg text-center">
                 <p className="text-xs text-muted-foreground">3 Anos</p>
-                <p className="font-bold text-sm">R$ {projections.threeYears.toFixed(0)}</p>
+                <p className="font-bold text-sm">Kz {projections.threeYears.toFixed(0)}</p>
               </div>
               <div className="p-3 bg-secondary/30 rounded-lg text-center">
                 <p className="text-xs text-muted-foreground">5 Anos</p>
-                <p className="font-bold text-sm">R$ {projections.fiveYears.toFixed(0)}</p>
+                <p className="font-bold text-sm">Kz {projections.fiveYears.toFixed(0)}</p>
               </div>
             </div>
             <p className="text-xs text-muted-foreground">

@@ -63,7 +63,7 @@ export const IncomeForm = ({ onSave, initialData }: IncomeFormProps) => {
       <CardContent className="space-y-6">
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="mainIncome">Renda Mensal Fixa (R$)</Label>
+            <Label htmlFor="mainIncome">Renda Mensal Fixa (Kz)</Label>
             <Input
               id="mainIncome"
               type="number"
@@ -93,7 +93,7 @@ export const IncomeForm = ({ onSave, initialData }: IncomeFormProps) => {
             <div key={income.id} className="flex items-center gap-2 p-3 bg-secondary/50 rounded-lg">
               <div className="flex-1">
                 <p className="font-medium text-sm">{income.source}</p>
-                <p className="text-sm text-muted-foreground">R$ {income.amount.toFixed(2)}</p>
+                <p className="text-sm text-muted-foreground">Kz {income.amount.toFixed(2)}</p>
               </div>
               <Button
                 variant="ghost"
@@ -127,7 +127,7 @@ export const IncomeForm = ({ onSave, initialData }: IncomeFormProps) => {
         <div className="pt-4 border-t">
           <div className="flex justify-between items-center mb-4">
             <span className="font-semibold">Renda Total:</span>
-            <span className="text-2xl font-bold text-primary">R$ {totalIncome.toFixed(2)}</span>
+            <span className="text-2xl font-bold text-primary">Kz {totalIncome.toFixed(2)}</span>
           </div>
           <Button onClick={handleSave} className="w-full">
             Salvar Renda

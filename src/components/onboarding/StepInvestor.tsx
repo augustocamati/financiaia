@@ -52,7 +52,7 @@ export const StepInvestor = () => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="invest-amount">Quanto deseja investir mensalmente? (R$)</Label>
+        <Label htmlFor="invest-amount">Quanto deseja investir mensalmente? (Kz)</Label>
         <Input id="invest-amount" type="number" placeholder="0,00" />
       </div>
 

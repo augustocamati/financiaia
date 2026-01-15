@@ -45,7 +45,7 @@ export const GoalsProjection = ({ goals, monthlyAvailable }: GoalsProjectionProp
               <span className="font-semibold text-success">Disponível para Metas</span>
             </div>
             <p className="text-2xl font-bold text-success">
-              R$ {monthlyAvailable.toFixed(2)}/mês
+              Kz {monthlyAvailable.toFixed(2)}/mês
             </p>
           </div>
         ) : (
@@ -72,7 +72,7 @@ export const GoalsProjection = ({ goals, monthlyAvailable }: GoalsProjectionProp
                   <div>
                     <h4 className="font-semibold mb-1">{goal.name}</h4>
                     <p className="text-2xl font-bold text-primary">
-                      R$ {goal.targetAmount.toFixed(2)}
+                      Kz {goal.targetAmount.toFixed(2)}
                     </p>
                   </div>
 

@@ -64,7 +64,7 @@ export const VariableExpensesForm = ({ onSave, initialData }: VariableExpensesFo
             <div key={expense.id} className="flex items-center gap-2 p-3 bg-secondary/50 rounded-lg">
               <div className="flex-1">
                 <p className="font-medium text-sm">{expense.category}</p>
-                <p className="text-sm text-muted-foreground">R$ {expense.amount.toFixed(2)}</p>
+                <p className="text-sm text-muted-foreground">Kz {expense.amount.toFixed(2)}</p>
               </div>
               <Button
                 variant="ghost"
@@ -98,7 +98,7 @@ export const VariableExpensesForm = ({ onSave, initialData }: VariableExpensesFo
         <div className="pt-4 border-t">
           <div className="flex justify-between items-center mb-4">
             <span className="font-semibold">Total Gastos Variáveis:</span>
-            <span className="text-2xl font-bold text-warning">R$ {total.toFixed(2)}</span>
+            <span className="text-2xl font-bold text-warning">Kz {total.toFixed(2)}</span>
           </div>
           <Button onClick={handleSave} className="w-full">
             Salvar Gastos Variáveis

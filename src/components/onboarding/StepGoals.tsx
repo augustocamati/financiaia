@@ -31,7 +31,7 @@ export const StepGoals = () => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="monthly-save">Quanto deseja poupar mensalmente? (R$)</Label>
+        <Label htmlFor="monthly-save">Quanto deseja poupar mensalmente? (Kz)</Label>
         <Input id="monthly-save" type="number" placeholder="0,00" />
       </div>
 
