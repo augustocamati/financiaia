@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { TrendingUp, PieChartIcon } from "lucide-react";
+import { formatCurrency, formatCurrencyShort } from "@/lib/utils";
 
 interface FinancialChartsProps {
   totalIncome: number;
@@ -40,13 +41,6 @@ export const FinancialCharts = ({
     ...fixedExpensesList.filter(e => e.amount > 0).map(e => ({ ...e, type: "Fixo" })),
     ...variableExpensesList.filter(e => e.amount > 0).map(e => ({ ...e, type: "Variável" })),
   ].sort((a, b) => b.amount - a.amount).slice(0, 8);
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("pt-AO", {
-      style: "currency",
-      currency: "AOA",
-    }).format(value);
-  };
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
@@ -158,7 +152,7 @@ export const FinancialCharts = ({
                   margin={{ top: 5, right: 30, left: 80, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                  <XAxis type="number" tickFormatter={(value) => formatCurrency(value)} />
+                  <XAxis type="number" tickFormatter={(value) => formatCurrencyShort(value)} />
                   <YAxis
                     type="category"
                     dataKey="category"

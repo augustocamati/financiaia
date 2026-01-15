@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Target, Calendar, TrendingUp } from "lucide-react";
+import { formatCurrency } from "@/lib/utils";
 
 interface Goal {
   id: string;
@@ -45,7 +46,7 @@ export const GoalsProjection = ({ goals, monthlyAvailable }: GoalsProjectionProp
               <span className="font-semibold text-success">Disponível para Metas</span>
             </div>
             <p className="text-2xl font-bold text-success">
-              Kz {monthlyAvailable.toFixed(2)}/mês
+              {formatCurrency(monthlyAvailable)}/mês
             </p>
           </div>
         ) : (
@@ -72,7 +73,7 @@ export const GoalsProjection = ({ goals, monthlyAvailable }: GoalsProjectionProp
                   <div>
                     <h4 className="font-semibold mb-1">{goal.name}</h4>
                     <p className="text-2xl font-bold text-primary">
-                      Kz {goal.targetAmount.toFixed(2)}
+                      {formatCurrency(goal.targetAmount)}
                     </p>
                   </div>
 
