@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, TrendingUp, AlertCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { formatCurrency } from "@/lib/utils";
 
 interface DistributionPanelProps {
   totalIncome: number;
@@ -45,11 +46,11 @@ export const DistributionPanel = ({
         <div className="grid grid-cols-2 gap-4">
           <div className="p-4 bg-primary/10 rounded-lg">
             <p className="text-sm text-muted-foreground mb-1">Renda Total</p>
-            <p className="text-2xl font-bold text-primary">R$ {totalIncome.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-primary">{formatCurrency(totalIncome)}</p>
           </div>
           <div className="p-4 bg-destructive/10 rounded-lg">
             <p className="text-sm text-muted-foreground mb-1">Total Gastos</p>
-            <p className="text-2xl font-bold text-destructive">R$ {totalExpenses.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-destructive">{formatCurrency(totalExpenses)}</p>
           </div>
         </div>
 
@@ -65,10 +66,10 @@ export const DistributionPanel = ({
             <Progress value={needsPercent} className="h-2" />
             <div className="flex justify-between items-center mt-1">
               <span className="text-xs text-muted-foreground">
-                R$ {fixedExpenses.toFixed(2)}
+                {formatCurrency(fixedExpenses)}
               </span>
               <span className="text-xs text-muted-foreground">
-                Ideal: 50% (R$ {idealNeeds.toFixed(2)})
+                Ideal: 50% ({formatCurrency(idealNeeds)})
               </span>
             </div>
           </div>
@@ -83,10 +84,10 @@ export const DistributionPanel = ({
             <Progress value={lifestylePercent} className="h-2" />
             <div className="flex justify-between items-center mt-1">
               <span className="text-xs text-muted-foreground">
-                R$ {variableExpenses.toFixed(2)}
+                {formatCurrency(variableExpenses)}
               </span>
               <span className="text-xs text-muted-foreground">
-                Ideal: 30% (R$ {idealLifestyle.toFixed(2)})
+                Ideal: 30% ({formatCurrency(idealLifestyle)})
               </span>
             </div>
           </div>
@@ -101,10 +102,10 @@ export const DistributionPanel = ({
             <Progress value={savingsPercent} className="h-2" />
             <div className="flex justify-between items-center mt-1">
               <span className="text-xs text-muted-foreground">
-                R$ {available.toFixed(2)}
+                {formatCurrency(available)}
               </span>
               <span className="text-xs text-muted-foreground">
-                Ideal: 20% (R$ {idealSavings.toFixed(2)})
+                Ideal: 20% ({formatCurrency(idealSavings)})
               </span>
             </div>
           </div>

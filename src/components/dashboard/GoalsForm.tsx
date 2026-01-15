@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Target, Plus, X } from "lucide-react";
+import { formatCurrency } from "@/lib/utils";
 
 interface Goal {
   id: string;
@@ -92,7 +93,7 @@ export const GoalsForm = ({ onSave, initialData }: GoalsFormProps) => {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold text-primary">
-                    R$ {goal.targetAmount.toFixed(2)}
+                    {formatCurrency(goal.targetAmount)}
                   </span>
                   {goal.deadline && (
                     <span className="text-sm text-muted-foreground">
@@ -138,7 +139,7 @@ export const GoalsForm = ({ onSave, initialData }: GoalsFormProps) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="goalAmount">Valor Total (R$)</Label>
+            <Label htmlFor="goalAmount">Valor Total (Kz)</Label>
             <Input
               id="goalAmount"
               type="number"
