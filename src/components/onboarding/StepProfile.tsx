@@ -16,7 +16,7 @@ export const StepProfile = () => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="income">Renda Mensal (R$)</Label>
+        <Label htmlFor="income">Renda Mensal (Kz)</Label>
         <Input id="income" type="number" placeholder="0,00" />
       </div>
 

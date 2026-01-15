@@ -27,7 +27,7 @@ export const ScenarioSimulator = ({ currentIncome, currentExpenses, goals }: Sce
         body: {
           scenario: {
             name: `Simulação ${new Date().toLocaleDateString()}`,
-            description: `Variação renda: R$ ${incomeChange}, Variação gastos: R$ ${expenseChange}`,
+            description: `Variação renda: Kz ${incomeChange}, Variação gastos: Kz ${expenseChange}`,
             currentIncome,
             currentExpenses,
             incomeChange,
@@ -67,7 +67,7 @@ export const ScenarioSimulator = ({ currentIncome, currentExpenses, goals }: Sce
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label>Mudança na Renda (R$)</Label>
+            <Label>Mudança na Renda (Kz)</Label>
             <Input
               type="number"
               value={incomeChange}
@@ -76,7 +76,7 @@ export const ScenarioSimulator = ({ currentIncome, currentExpenses, goals }: Sce
             />
           </div>
           <div className="space-y-2">
-            <Label>Mudança nos Gastos (R$)</Label>
+            <Label>Mudança nos Gastos (Kz)</Label>
             <Input
               type="number"
               value={expenseChange}
@@ -97,16 +97,16 @@ export const ScenarioSimulator = ({ currentIncome, currentExpenses, goals }: Sce
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
                   <span>Nova Renda:</span>
-                  <span className="font-semibold">R$ {results.summary.newIncome.toFixed(2)}</span>
+                  <span className="font-semibold">Kz {results.summary.newIncome.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Novos Gastos:</span>
-                  <span className="font-semibold">R$ {results.summary.newExpenses.toFixed(2)}</span>
+                  <span className="font-semibold">Kz {results.summary.newExpenses.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span>Disponível:</span>
                   <span className="font-semibold flex items-center gap-1">
-                    R$ {results.summary.newAvailable.toFixed(2)}
+                    Kz {results.summary.newAvailable.toFixed(2)}
                     {results.summary.changeFromCurrent > 0 ? (
                       <TrendingUp className="w-4 h-4 text-success" />
                     ) : (
@@ -118,7 +118,7 @@ export const ScenarioSimulator = ({ currentIncome, currentExpenses, goals }: Sce
                   <span>Mudança:</span>
                   <span className={`font-bold ${results.summary.changeFromCurrent > 0 ? 'text-success' : 'text-destructive'}`}>
                     {results.summary.changeFromCurrent > 0 ? '+' : ''}
-                    R$ {results.summary.changeFromCurrent.toFixed(2)} 
+                    Kz {results.summary.changeFromCurrent.toFixed(2)} 
                     ({results.summary.changePercent}%)
                   </span>
                 </div>
@@ -128,10 +128,10 @@ export const ScenarioSimulator = ({ currentIncome, currentExpenses, goals }: Sce
             <div className="p-4 bg-secondary/30 rounded-lg">
               <h4 className="font-semibold mb-2">Projeções de Investimento</h4>
               <div className="grid grid-cols-2 gap-2 text-sm">
-                <div>6 meses: <span className="font-semibold">R$ {results.investmentProjections.months_6}</span></div>
-                <div>12 meses: <span className="font-semibold">R$ {results.investmentProjections.months_12}</span></div>
-                <div>24 meses: <span className="font-semibold">R$ {results.investmentProjections.months_24}</span></div>
-                <div>36 meses: <span className="font-semibold">R$ {results.investmentProjections.months_36}</span></div>
+                <div>6 meses: <span className="font-semibold">Kz {results.investmentProjections.months_6}</span></div>
+                <div>12 meses: <span className="font-semibold">Kz {results.investmentProjections.months_12}</span></div>
+                <div>24 meses: <span className="font-semibold">Kz {results.investmentProjections.months_24}</span></div>
+                <div>36 meses: <span className="font-semibold">Kz {results.investmentProjections.months_36}</span></div>
               </div>
             </div>
 

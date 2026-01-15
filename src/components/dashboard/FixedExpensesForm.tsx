@@ -72,7 +72,7 @@ export const FixedExpensesForm = ({ onSave, initialData }: FixedExpensesFormProp
         {expenses.map((expense) => (
           <div key={expense.id} className="flex items-center gap-2">
             <div className="flex-1 space-y-1">
-              <Label htmlFor={expense.id}>{expense.category} (R$)</Label>
+              <Label htmlFor={expense.id}>{expense.category} (Kz)</Label>
               <Input
                 id={expense.id}
                 type="number"
@@ -116,7 +116,7 @@ export const FixedExpensesForm = ({ onSave, initialData }: FixedExpensesFormProp
         <div className="pt-4 border-t">
           <div className="flex justify-between items-center mb-4">
             <span className="font-semibold">Total Gastos Fixos:</span>
-            <span className="text-2xl font-bold text-destructive">R$ {total.toFixed(2)}</span>
+            <span className="text-2xl font-bold text-destructive">Kz {total.toFixed(2)}</span>
           </div>
           <Button onClick={handleSave} className="w-full">
             Salvar Gastos Fixos

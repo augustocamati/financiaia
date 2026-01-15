@@ -6,7 +6,7 @@ export const StepBudget = () => {
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <h3 className="font-semibold text-lg">Gastos Fixos Mensais (R$)</h3>
+        <h3 className="font-semibold text-lg">Gastos Fixos Mensais (Kz)</h3>
         
         <div className="space-y-2">
           <Label htmlFor="rent">Aluguel/Moradia</Label>
