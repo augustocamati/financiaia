@@ -15,6 +15,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useFinancialData } from "@/hooks/useFinancialData";
 import { LogOut, Loader2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import logo from "@/assets/logo.png";
+import userAvatar from "@/assets/user-avatar.png";
 
 const Dashboard = () => {
   const { signOut, user } = useAuth();
