@@ -64,20 +64,40 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-              Painel Financeiro 💰
-              {saving && <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />}
-            </h1>
-            <p className="text-muted-foreground">
-              Bem-vindo, {user?.email}
-            </p>
+        <div className="mb-8 flex justify-between items-center gap-4">
+          <div className="flex items-center gap-3">
+            <div>
+              <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
+                Painel Financeiro 💰
+                {saving && <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />}
+              </h1>
+              <p className="text-muted-foreground">
+                Bem-vindo, {user?.email}
+              </p>
+            </div>
           </div>
-          <Button variant="outline" onClick={signOut}>
-            <LogOut className="w-4 h-4 mr-2" />
-            Sair
-          </Button>
+          <div className="flex items-center gap-4">
+            <img
+              src={userAvatar}
+              alt="Avatar do usuário"
+              loading="lazy"
+              width={48}
+              height={48}
+              className="w-12 h-12 rounded-full border-2 border-primary/20 shadow-sm"
+            />
+            <Button variant="outline" onClick={signOut}>
+              <LogOut className="w-4 h-4 mr-2" />
+              Sair
+            </Button>
+            <img
+              src={logo}
+              alt="Logo FinanceIA"
+              loading="lazy"
+              width={64}
+              height={64}
+              className="w-16 h-16 object-contain"
+            />
+          </div>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
