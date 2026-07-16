@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, TrendingUp, PiggyBank, Target, Shield, LogOut } from "lucide-react";
+import { ArrowRight, PiggyBank, Target, Shield, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 const Index = () => {
   const navigate = useNavigate();
