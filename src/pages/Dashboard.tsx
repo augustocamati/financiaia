@@ -120,9 +120,9 @@ const Dashboard = () => {
               src={logoAsset.url}
               alt="Logo FinanceIA"
               loading="lazy"
-              width={64}
-              height={64}
-              className="w-16 h-16 object-contain"
+              width={96}
+              height={96}
+              className="w-24 h-24 object-contain rounded-full bg-white shadow-glow ring-2 ring-primary/20"
             />
           </div>
         </div>
