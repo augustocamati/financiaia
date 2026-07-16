@@ -22,7 +22,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useFinancialData } from "@/hooks/useFinancialData";
 import { LogOut, Loader2, User, Settings } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import logo from "@/assets/logo.png";
+import logoAsset from "@/assets/logo.png.asset.json";
 import userAvatar from "@/assets/user-avatar.png";
 
 const Dashboard = () => {
@@ -117,7 +117,7 @@ const Dashboard = () => {
               </DropdownMenuContent>
             </DropdownMenu>
             <img
-              src={logo}
+              src={logoAsset.url}
               alt="Logo FinanceIA"
               loading="lazy"
               width={64}
