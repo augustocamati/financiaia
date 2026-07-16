@@ -1,5 +1,12 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { IncomeForm } from "@/components/dashboard/IncomeForm";
 import { FixedExpensesForm } from "@/components/dashboard/FixedExpensesForm";
 import { VariableExpensesForm } from "@/components/dashboard/VariableExpensesForm";
@@ -13,7 +20,7 @@ import { InvestmentRecommendation } from "@/components/dashboard/InvestmentRecom
 import { FinancialCharts } from "@/components/dashboard/FinancialCharts";
 import { useAuth } from "@/contexts/AuthContext";
 import { useFinancialData } from "@/hooks/useFinancialData";
-import { LogOut, Loader2 } from "lucide-react";
+import { LogOut, Loader2, User, Settings } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import logo from "@/assets/logo.png";
 import userAvatar from "@/assets/user-avatar.png";
