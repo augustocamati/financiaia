@@ -84,18 +84,38 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <img
-              src={userAvatar}
-              alt="Avatar do usuário"
-              loading="lazy"
-              width={48}
-              height={48}
-              className="w-12 h-12 rounded-full border-2 border-primary/20 shadow-sm"
-            />
-            <Button variant="outline" onClick={signOut}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Sair
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="rounded-full border-2 border-primary/20 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  aria-label="Menu do usuário"
+                >
+                  <img
+                    src={userAvatar}
+                    alt="Avatar do usuário"
+                    loading="lazy"
+                    width={48}
+                    height={48}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-52">
+                <DropdownMenuItem className="cursor-pointer">
+                  <User className="w-4 h-4 mr-2" />
+                  Perfil
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Configurações
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="cursor-pointer text-destructive focus:text-destructive" onClick={signOut}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sair
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <img
               src={logo}
               alt="Logo FinanceIA"
