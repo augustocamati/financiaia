@@ -13,14 +13,14 @@ const Index = () => {
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16">
         <nav className="flex items-center justify-between mb-16">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              FinanceIA
-            </span>
-          </div>
+          <img
+            src={logoAsset.url}
+            alt="Logo FinanceIA"
+            loading="lazy"
+            width={160}
+            height={48}
+            className="h-12 w-auto object-contain"
+          />
           {user ? (
             <div className="flex gap-2">
               <Button onClick={() => navigate("/dashboard")}>
