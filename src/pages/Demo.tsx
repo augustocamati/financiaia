@@ -17,31 +17,31 @@ const demoUser = {
 };
 
 const demoIncome = {
-  mainIncome: 6500,
+  mainIncome: 150000,
   additionalIncomes: [
-    { id: "a1", source: "Freelance Design", amount: 1200 },
+    { id: "a1", source: "Freelance Design", amount: 15000 },
   ],
 };
 
 const demoFixedExpenses = [
-  { id: "1", category: "Aluguel/Moradia", amount: 1800 },
-  { id: "2", category: "Água, Luz, Internet", amount: 420 },
-  { id: "3", category: "Transporte", amount: 380 },
-  { id: "4", category: "Alimentação Básica", amount: 900 },
-  { id: "5", category: "Escola/Educação", amount: 350 },
+  { id: "1", category: "Aluguel/Moradia", amount: 70000 },
+  { id: "2", category: "Água, Luz, Internet", amount: 10000 },
+  { id: "3", category: "Transporte", amount: 10000 },
+  { id: "4", category: "Alimentação Básica", amount: 25000 },
+  { id: "5", category: "Escola/Educação", amount: 12000 },
 ];
 
 const demoVariableExpenses = [
-  { id: "v1", category: "Lazer", amount: 450 },
-  { id: "v2", category: "Restaurantes", amount: 380 },
-  { id: "v3", category: "Compras", amount: 320 },
-  { id: "v4", category: "Saúde", amount: 180 },
+  { id: "v1", category: "Lazer", amount: 8000 },
+  { id: "v2", category: "Restaurantes", amount: 5000 },
+  { id: "v3", category: "Compras", amount: 4000 },
+  { id: "v4", category: "Saúde", amount: 3000 },
 ];
 
 const demoGoals = [
-  { id: "g1", name: "Reserva de Emergência", type: "emergency", targetAmount: 20000, deadline: "2026-12-31" },
-  { id: "g2", name: "Viagem Europa", type: "travel", targetAmount: 15000, deadline: "2027-07-01" },
-  { id: "g3", name: "Entrada Apartamento", type: "property", targetAmount: 60000, deadline: "2028-06-01" },
+  { id: "g1", name: "Reserva de Emergência", type: "emergency", targetAmount: 500000, deadline: "2026-12-31" },
+  { id: "g2", name: "Viagem Europa", type: "travel", targetAmount: 300000, deadline: "2027-07-01" },
+  { id: "g3", name: "Entrada Apartamento", type: "property", targetAmount: 1500000, deadline: "2028-06-01" },
 ];
 
 const Demo = () => {
