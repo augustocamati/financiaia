@@ -86,9 +86,9 @@ const Auth = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-secondary p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 w-12 h-12 bg-primary rounded-full flex items-center justify-center">
-            <DollarSign className="w-6 h-6 text-primary-foreground" />
-          </div>
+          <button onClick={() => navigate('/')} className="mx-auto mb-4 block">
+            <img src={logoAsset.url} alt="FinanceIA" className="w-16 h-16 rounded-full bg-white shadow-glow ring-2 ring-primary/20" />
+          </button>
           <CardTitle className="text-2xl">FinanceIA</CardTitle>
           <CardDescription>Gestão financeira inteligente</CardDescription>
         </CardHeader>
