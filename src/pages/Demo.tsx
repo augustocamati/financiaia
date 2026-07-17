@@ -1,0 +1,141 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { DistributionPanel } from "@/components/dashboard/DistributionPanel";
+import { GoalsProjection } from "@/components/dashboard/GoalsProjection";
+import { InvestmentRecommendation } from "@/components/dashboard/InvestmentRecommendation";
+import { FinancialCharts } from "@/components/dashboard/FinancialCharts";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Sparkles } from "lucide-react";
+import logoAsset from "@/assets/logo.png.asset.json";
+import userAvatar from "@/assets/user-avatar.png";
+
+// Usuário e dados fictícios para demonstração
+const demoUser = {
+  name: "Ana Silva",
+  email: "ana.demo@financeia.app",
+};
+
+const demoIncome = {
+  mainIncome: 6500,
+  additionalIncomes: [
+    { id: "a1", source: "Freelance Design", amount: 1200 },
+  ],
+};
+
+const demoFixedExpenses = [
+  { id: "1", category: "Aluguel/Moradia", amount: 1800 },
+  { id: "2", category: "Água, Luz, Internet", amount: 420 },
+  { id: "3", category: "Transporte", amount: 380 },
+  { id: "4", category: "Alimentação Básica", amount: 900 },
+  { id: "5", category: "Escola/Educação", amount: 350 },
+];
+
+const demoVariableExpenses = [
+  { id: "v1", category: "Lazer", amount: 450 },
+  { id: "v2", category: "Restaurantes", amount: 380 },
+  { id: "v3", category: "Compras", amount: 320 },
+  { id: "v4", category: "Saúde", amount: 180 },
+];
+
+const demoGoals = [
+  { id: "g1", name: "Reserva de Emergência", type: "emergency", targetAmount: 20000, deadline: "2026-12-31" },
+  { id: "g2", name: "Viagem Europa", type: "travel", targetAmount: 15000, deadline: "2027-07-01" },
+  { id: "g3", name: "Entrada Apartamento", type: "property", targetAmount: 60000, deadline: "2028-06-01" },
+];
+
+const Demo = () => {
+  const navigate = useNavigate();
+
+  const totalIncome =
+    demoIncome.mainIncome + demoIncome.additionalIncomes.reduce((s, i) => s + i.amount, 0);
+  const totalFixedExpenses = demoFixedExpenses.reduce((s, e) => s + e.amount, 0);
+  const totalVariableExpenses = demoVariableExpenses.reduce((s, e) => s + e.amount, 0);
+  const monthlyAvailable = totalIncome - totalFixedExpenses - totalVariableExpenses;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary">
+      <div className="bg-primary/10 border-b border-primary/20">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between gap-4 flex-wrap">
+          <div className="flex items-center gap-2 text-sm">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="font-medium">Modo Demonstração</span>
+            <span className="text-muted-foreground hidden sm:inline">
+              — dados fictícios para você explorar a plataforma
+            </span>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
+            </Button>
+            <Button size="sm" onClick={() => navigate("/auth")}>
+              Criar minha conta
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8 flex justify-between items-center gap-4 flex-wrap">
+          <div className="flex items-center gap-4">
+            <img
+              src={userAvatar}
+              alt="Avatar"
+              className="w-12 h-12 rounded-full object-cover border-2 border-primary/20"
+            />
+            <div>
+              <h1 className="text-3xl font-bold mb-1 flex items-center gap-2">
+                Olá, {demoUser.name} <Badge variant="secondary">Demo</Badge>
+              </h1>
+              <p className="text-muted-foreground">{demoUser.email}</p>
+            </div>
+          </div>
+          <button onClick={() => navigate("/")} aria-label="Voltar ao início">
+            <img
+              src={logoAsset.url}
+              alt="Logo FinanceIA"
+              className="w-20 h-20 object-contain rounded-full bg-white shadow-glow ring-2 ring-primary/20"
+            />
+          </button>
+        </div>
+
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+            <TabsTrigger value="goals">Metas</TabsTrigger>
+            <TabsTrigger value="investments">Investimentos</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid lg:grid-cols-2 gap-6">
+              <DistributionPanel
+                totalIncome={totalIncome}
+                fixedExpenses={totalFixedExpenses}
+                variableExpenses={totalVariableExpenses}
+              />
+              <GoalsProjection goals={demoGoals} monthlyAvailable={monthlyAvailable} />
+            </div>
+            <FinancialCharts
+              totalIncome={totalIncome}
+              fixedExpenses={totalFixedExpenses}
+              variableExpenses={totalVariableExpenses}
+              fixedExpensesList={demoFixedExpenses}
+              variableExpensesList={demoVariableExpenses}
+            />
+          </TabsContent>
+
+          <TabsContent value="goals" className="space-y-6">
+            <GoalsProjection goals={demoGoals} monthlyAvailable={monthlyAvailable} />
+          </TabsContent>
+
+          <TabsContent value="investments" className="space-y-6">
+            <InvestmentRecommendation monthlyAvailable={monthlyAvailable} />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  );
+};
+
+export default Demo;
