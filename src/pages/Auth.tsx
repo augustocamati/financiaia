@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { DollarSign } from 'lucide-react';
+import logoAsset from '@/assets/logo.png.asset.json';
 
 const Auth = () => {
   const navigate = useNavigate();
