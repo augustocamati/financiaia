@@ -1,44 +1,59 @@
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { IncomeForm } from "@/components/dashboard/IncomeForm";
+import { FixedExpensesForm } from "@/components/dashboard/FixedExpensesForm";
+import { VariableExpensesForm } from "@/components/dashboard/VariableExpensesForm";
+import { GoalsForm } from "@/components/dashboard/GoalsForm";
 import { DistributionPanel } from "@/components/dashboard/DistributionPanel";
 import { GoalsProjection } from "@/components/dashboard/GoalsProjection";
+import { AIInsightsPanel } from "@/components/dashboard/AIInsightsPanel";
+import { ScenarioSimulator } from "@/components/dashboard/ScenarioSimulator";
+import { AIChatAssistant } from "@/components/dashboard/AIChatAssistant";
 import { InvestmentRecommendation } from "@/components/dashboard/InvestmentRecommendation";
 import { FinancialCharts } from "@/components/dashboard/FinancialCharts";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Sparkles } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import logoAsset from "@/assets/logo.png.asset.json";
 import userAvatar from "@/assets/user-avatar.png";
 
-// Usuário e dados fictícios para demonstração
 const demoUser = {
   name: "Ana Silva",
   email: "ana.demo@financeia.app",
 };
 
-const demoIncome = {
+const initialIncome = {
   mainIncome: 150000,
+  paymentDay: 5,
   additionalIncomes: [
     { id: "a1", source: "Freelance Design", amount: 15000 },
   ],
 };
 
-const demoFixedExpenses = [
-  { id: "1", category: "Aluguel/Moradia", amount: 70000 },
-  { id: "2", category: "Água, Luz, Internet", amount: 10000 },
-  { id: "3", category: "Transporte", amount: 10000 },
-  { id: "4", category: "Alimentação Básica", amount: 25000 },
-  { id: "5", category: "Escola/Educação", amount: 12000 },
-];
+const initialFixedExpenses = {
+  expenses: [
+    { id: "1", category: "Aluguel/Moradia", amount: 70000 },
+    { id: "2", category: "Água, Luz, Internet", amount: 10000 },
+    { id: "3", category: "Transporte", amount: 10000 },
+    { id: "4", category: "Alimentação Básica", amount: 25000 },
+    { id: "5", category: "Escola/Educação", amount: 12000 },
+  ],
+};
 
-const demoVariableExpenses = [
-  { id: "v1", category: "Lazer", amount: 8000 },
-  { id: "v2", category: "Restaurantes", amount: 5000 },
-  { id: "v3", category: "Compras", amount: 4000 },
-  { id: "v4", category: "Saúde", amount: 3000 },
-];
+const initialVariableExpenses = {
+  expenses: [
+    { id: "v1", category: "Lazer", amount: 8000 },
+    { id: "v2", category: "Restaurantes", amount: 5000 },
+    { id: "v3", category: "Compras", amount: 4000 },
+    { id: "v4", category: "Saúde", amount: 3000 },
+  ],
+};
 
-const demoGoals = [
+type DemoGoal = { id: string; name: string; type: string; targetAmount: number; deadline?: string };
+
+const initialGoals: DemoGoal[] = [
   { id: "g1", name: "Reserva de Emergência", type: "emergency", targetAmount: 500000, deadline: "2026-12-31" },
   { id: "g2", name: "Viagem Europa", type: "travel", targetAmount: 300000, deadline: "2027-07-01" },
   { id: "g3", name: "Entrada Apartamento", type: "property", targetAmount: 1500000, deadline: "2028-06-01" },
@@ -46,11 +61,24 @@ const demoGoals = [
 
 const Demo = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  // Estado apenas em memória — nada é persistido no banco
+  const [incomeData, setIncomeData] = useState(initialIncome);
+  const [fixedExpenses, setFixedExpenses] = useState(initialFixedExpenses);
+  const [variableExpenses, setVariableExpenses] = useState(initialVariableExpenses);
+  const [goals, setGoals] = useState(initialGoals);
+
+  const notifyMemoryOnly = () =>
+    toast({
+      title: "Alterações salvas em memória",
+      description: "No modo demo, os dados não são gravados no banco.",
+    });
 
   const totalIncome =
-    demoIncome.mainIncome + demoIncome.additionalIncomes.reduce((s, i) => s + i.amount, 0);
-  const totalFixedExpenses = demoFixedExpenses.reduce((s, e) => s + e.amount, 0);
-  const totalVariableExpenses = demoVariableExpenses.reduce((s, e) => s + e.amount, 0);
+    incomeData.mainIncome + incomeData.additionalIncomes.reduce((s, i) => s + i.amount, 0);
+  const totalFixedExpenses = fixedExpenses.expenses.reduce((s, e) => s + e.amount, 0);
+  const totalVariableExpenses = variableExpenses.expenses.reduce((s, e) => s + e.amount, 0);
   const monthlyAvailable = totalIncome - totalFixedExpenses - totalVariableExpenses;
 
   return (
@@ -61,7 +89,7 @@ const Demo = () => {
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="font-medium">Modo Demonstração</span>
             <span className="text-muted-foreground hidden sm:inline">
-              — dados fictícios para você explorar a plataforma
+              — edite à vontade; nada é gravado no banco
             </span>
           </div>
           <div className="flex gap-2">
@@ -101,10 +129,13 @@ const Demo = () => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+            <TabsTrigger value="budget">Orçamento</TabsTrigger>
             <TabsTrigger value="goals">Metas</TabsTrigger>
             <TabsTrigger value="investments">Investimentos</TabsTrigger>
+            <TabsTrigger value="ai">IA & Projeções</TabsTrigger>
+            <TabsTrigger value="chat">Assistente</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -114,23 +145,88 @@ const Demo = () => {
                 fixedExpenses={totalFixedExpenses}
                 variableExpenses={totalVariableExpenses}
               />
-              <GoalsProjection goals={demoGoals} monthlyAvailable={monthlyAvailable} />
+              <GoalsProjection goals={goals} monthlyAvailable={monthlyAvailable} />
             </div>
             <FinancialCharts
               totalIncome={totalIncome}
               fixedExpenses={totalFixedExpenses}
               variableExpenses={totalVariableExpenses}
-              fixedExpensesList={demoFixedExpenses}
-              variableExpensesList={demoVariableExpenses}
+              fixedExpensesList={fixedExpenses.expenses}
+              variableExpensesList={variableExpenses.expenses}
             />
           </TabsContent>
 
+          <TabsContent value="budget" className="space-y-6">
+            <div className="grid lg:grid-cols-2 gap-6">
+              <IncomeForm
+                initialData={incomeData}
+                onSave={(data) => {
+                  setIncomeData(data);
+                  notifyMemoryOnly();
+                }}
+              />
+              <FixedExpensesForm
+                initialData={fixedExpenses}
+                onSave={(data) => {
+                  setFixedExpenses(data);
+                  notifyMemoryOnly();
+                }}
+              />
+            </div>
+            <div className="grid lg:grid-cols-2 gap-6">
+              <VariableExpensesForm
+                initialData={variableExpenses}
+                onSave={(data) => {
+                  setVariableExpenses(data);
+                  notifyMemoryOnly();
+                }}
+              />
+              <DistributionPanel
+                totalIncome={totalIncome}
+                fixedExpenses={totalFixedExpenses}
+                variableExpenses={totalVariableExpenses}
+              />
+            </div>
+          </TabsContent>
+
           <TabsContent value="goals" className="space-y-6">
-            <GoalsProjection goals={demoGoals} monthlyAvailable={monthlyAvailable} />
+            <div className="grid lg:grid-cols-2 gap-6">
+              <GoalsForm
+                initialData={goals}
+                onSave={(data) => {
+                  setGoals(data);
+                  notifyMemoryOnly();
+                }}
+              />
+              <GoalsProjection goals={goals} monthlyAvailable={monthlyAvailable} />
+            </div>
           </TabsContent>
 
           <TabsContent value="investments" className="space-y-6">
             <InvestmentRecommendation monthlyAvailable={monthlyAvailable} />
+          </TabsContent>
+
+          <TabsContent value="ai" className="space-y-6">
+            <div className="grid lg:grid-cols-2 gap-6">
+              <AIInsightsPanel
+                financialData={{
+                  totalIncome,
+                  totalFixedExpenses,
+                  totalVariableExpenses,
+                  monthlyAvailable,
+                  goals,
+                }}
+              />
+              <ScenarioSimulator
+                currentIncome={totalIncome}
+                currentExpenses={totalFixedExpenses + totalVariableExpenses}
+                goals={goals}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="chat" className="space-y-6">
+            <AIChatAssistant />
           </TabsContent>
         </Tabs>
       </div>
