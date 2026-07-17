@@ -51,7 +51,9 @@ const initialVariableExpenses = {
   ],
 };
 
-const initialGoals = [
+type DemoGoal = { id: string; name: string; type: string; targetAmount: number; deadline?: string };
+
+const initialGoals: DemoGoal[] = [
   { id: "g1", name: "Reserva de Emergência", type: "emergency", targetAmount: 500000, deadline: "2026-12-31" },
   { id: "g2", name: "Viagem Europa", type: "travel", targetAmount: 300000, deadline: "2027-07-01" },
   { id: "g3", name: "Entrada Apartamento", type: "property", targetAmount: 1500000, deadline: "2028-06-01" },
